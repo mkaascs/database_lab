@@ -4,11 +4,11 @@ project(1 C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(1 lab_db.c
-        HeaderFiles/db_records.h
-        HeaderFiles/db_commands.h
-        SourceFiles/db_commands.c
-        HeaderFiles/db_stats.h
-        SourceFiles/db_stats.c
-        HeaderFiles/db_command_parser.h
-        SourceFiles/db_command_parser.c
+        application/domain/db_records.h
+        application/db_commands.h
+        application/db_commands.c
+        memory/stats.h
+        memory/stats.c
+        parsing/db_command_parser.h
+        parsing/db_command_parser.c
 )

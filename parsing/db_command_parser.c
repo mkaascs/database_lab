@@ -1,5 +1,5 @@
-#include "../HeaderFiles/db_command_parser.h"
-#include "../HeaderFiles/db_stats.h"
+#include "../parsing/db_command_parser.h"
+#include "../memory/stats.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -113,10 +113,13 @@ int parse_command(const char* command_line, ParsedCommand* command) {
     int length = tokenize(command_line, ' ', tokens);
 
     parse_command_type(tokens[0], command);
-    parse_fields(tokens[1], command);
+    int has_fields = command->type != Delete;
 
-    for (int index = 2; index < length; index++) {
-        parse_condition(tokens[index], &command->conditions[index - 2]);
+    if (has_fields)
+        parse_fields(tokens[1], command);
+
+    for (int index = 1 + has_fields; index < length; index++) {
+        parse_condition(tokens[index], &command->conditions[index - 1 - has_fields]);
         command->conditions_count++;
     }
 

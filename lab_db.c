@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "HeaderFiles/db_command_parser.h"
+#include "parsing/db_command_parser.h"
 
 void print_command(const ParsedCommand *cmd) {
     printf("Command type: %d\n", cmd->type);
