@@ -18,14 +18,10 @@ void print_command(const ParsedCommand *cmd) {
         printf("  %s %s %s\n", cmd->conditions[i].field,
                cmd->conditions[i].operator, cmd->conditions[i].value);
     }
-
-    printf("Sort fields:\n");
-    for (int i = 0; i < cmd->sort_fields_count; i++) {
-        printf("  %s = %s\n", cmd->sort_fields[i].field, cmd->sort_fields[i].order);
-    }
 }
 
 int main() {
+    /*
     const char *commands[] = {
         "sort pid=desc,file_tm=desc,cpu_usage=asc",
         "uniq file_tm,cpu_usage,status",
@@ -43,7 +39,5 @@ int main() {
             printf("Error parsing: %s\n", commands[i]);
         }
     }
-
-
-    return 0;
+    */
 }
