@@ -1,8 +1,9 @@
 #ifndef DB_COMMAND_PARSER_H
 #define DB_COMMAND_PARSER_H
 
-#define FIELD_LENGTH 20
-#define VALUE_LENGTH 50
+#define FIELD_LENGTH 10
+#define OPERATOR_LENGTH 10
+#define VALUE_LENGTH 30
 
 #define MAX_FIELDS 10
 #define MAX_CONDITIONS 10
@@ -10,8 +11,6 @@
 typedef enum {
     Insert, Select, Update, Delete, Uniq, Sort
 } CommandType;
-
-extern const char *const command_type_names[];
 
 typedef struct {
     char field[FIELD_LENGTH];
@@ -21,7 +20,7 @@ typedef struct {
 
 typedef struct {
     char field[FIELD_LENGTH];
-    char operator[10];
+    char operator[OPERATOR_LENGTH];
     char value[VALUE_LENGTH];
 } Condition;
 

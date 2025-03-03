@@ -21,17 +21,17 @@ void print_command(const ParsedCommand *cmd) {
 }
 
 int main() {
-    /*
     const char *commands[] = {
+        "update   kern_tm='18:40:52',,,priority=15, priority<=004 status/not_in/['paused'] pid<=15",
         "sort pid=desc,file_tm=desc,cpu_usage=asc",
-        "uniq file_tm,cpu_usage,status",
-        "update   priority=15,kern_tm='18:40:52' priority<=004 status/not_in/['paused'] pid<=15",
+        "insert kern_tm='23:5:59',cpu_usage=7.0,status='paused',file_tm='18:42:00',name=\"Cisco \"Control\",v.1.01\",priority=-00000000000051,pid=57",
         "select kern_tm,name kern_tm!='18:42:00' file_tm<'18:40:52' name>\"alert\" name!=\"alert\"",
-        "delete    name<=\"halt\" status=='running' file_tm=='23:59:59'"
+        "delete priority>41 kern_tm>'18:42:00'"
     };
 
-    for (int i = 0; i < sizeof(commands) / sizeof(commands[0]); i++) {
+    for (int i = 0; i < 5; i++) {
         ParsedCommand cmd;
+        memset(&cmd, 0, sizeof(ParsedCommand));
         if (parse_command(commands[i], &cmd) == 0) {
             print_command(&cmd);
             printf("\n");
@@ -39,5 +39,5 @@ int main() {
             printf("Error parsing: %s\n", commands[i]);
         }
     }
-    */
+
 }
