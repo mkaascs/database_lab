@@ -1,5 +1,4 @@
-#include "../parsing/db_command_parser.h"
-#include "../memory/stats.h"
+#include "../parsing/parser.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,20 +19,21 @@ const char *const command_type_names[] = {
     "insert", "select", "update", "delete", "uniq", "sort"
 };
 
-int tokenize(const char* origin, char symbol, char** result) {
+int tokenize(const char* origin, char symbol, char (*result)[FIELD_LENGTH + VALUE_LENGTH]) {
     int split_length = 0;
     int left_index = 0;
     bool in_quotation = false;
+    const int length = strlen(origin);
 
-    for (int index = 0; index <= strlen(origin); index++) {
+    for (int index = 0; index <= length; index++) {
         if (origin[index] == '\"' || origin[index] == '\'')
             in_quotation = !in_quotation;
 
-        if ((origin[index] == symbol && !in_quotation) || index == strlen(origin)) {
+        if ((origin[index] == symbol && !in_quotation) || index == length) {
             strncpy(result[split_length], origin + left_index, index - left_index);
             result[split_length][index - left_index] = '\0';
 
-            for (; origin[index] == symbol; index++) {} // skip all symbols
+            for (; origin[index] == symbol && index < length; index++) {}
 
             left_index = index;
             split_length++;
@@ -44,7 +44,7 @@ int tokenize(const char* origin, char symbol, char** result) {
 }
 
 void parse_command_type(const char* command_type, ParsedCommand* command) {
-    for (int index = 0; index < strlen(command_type_names); index++) {
+    for (int index = 0; index < 6; index++) {
         if (strcmp(command_type, command_type_names[index]) == 0) {
             command->type = index;
             break;
@@ -53,10 +53,7 @@ void parse_command_type(const char* command_type, ParsedCommand* command) {
 }
 
 void parse_fields(const char* fields, ParsedCommand* command) {
-    char* tokens[MAX_FIELDS];
-    for (int index = 0; index < MAX_FIELDS; index++) {
-        tokens[index] = track_malloc((FIELD_LENGTH + VALUE_LENGTH) * sizeof(char));
-    }
+    char tokens[MAX_FIELDS][FIELD_LENGTH + VALUE_LENGTH];
 
     command->fields_count = tokenize(fields, ',', tokens);
 
@@ -73,10 +70,6 @@ void parse_fields(const char* fields, ParsedCommand* command) {
         strncpy(command->fields[index].field, tokens[index], equal_index);
         command->fields[index].field[equal_index] = '\0';
         strncpy(command->fields[index].value, tokens[index] + equal_index + 1, VALUE_LENGTH);
-    }
-
-    for (int index = 0; index < MAX_FIELDS; index++) {
-        track_free(tokens[index]);
     }
 }
 
@@ -105,11 +98,7 @@ void parse_condition(const char* condition, Condition* parsed) {
 }
 
 int parse_command(const char* command_line, ParsedCommand* command) {
-    char* tokens[MAX_TOKENS];
-    for (int index = 0; index < MAX_TOKENS; index++) {
-        tokens[index] = track_malloc((FIELD_LENGTH + VALUE_LENGTH) * sizeof(char));
-    }
-
+    char tokens[MAX_TOKENS][FIELD_LENGTH + VALUE_LENGTH];
     int length = tokenize(command_line, ' ', tokens);
 
     parse_command_type(tokens[0], command);
@@ -121,10 +110,6 @@ int parse_command(const char* command_line, ParsedCommand* command) {
     for (int index = 1 + has_fields; index < length; index++) {
         parse_condition(tokens[index], &command->conditions[index - 1 - has_fields]);
         command->conditions_count++;
-    }
-
-    for (int index = 0; index < MAX_TOKENS; index++) {
-        track_free(tokens[index]);
     }
 
     return 0;

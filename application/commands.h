@@ -2,9 +2,9 @@
 #define DB_COMMANDS_H
 
 #include "domain/db_records.h"
-#include "../parsing/db_command_parser.h"
+#include "parsing/parser.h"
 
-void insert_command(Node*, ParsedCommand);
+int insert_command(Node*, ParsedCommand);
 void select_command(Node*, ParsedCommand);
 void delete_records(Node*, ParsedCommand);
 void update_records(Node*, ParsedCommand);

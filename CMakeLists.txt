@@ -5,10 +5,13 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(1 lab_db.c
         application/domain/db_records.h
-        application/db_commands.h
-        application/db_commands.c
+        application/commands.h
         memory/stats.h
         memory/stats.c
-        parsing/db_command_parser.h
-        parsing/db_command_parser.c
+        application/parsing/parser.h
+        application/parsing/parser.c
+        application/commands.c
+        application/commands.c
+        application/domain/converting/converter.h
+        application/domain/converting/converter.c
 )

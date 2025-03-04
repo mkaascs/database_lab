@@ -1,8 +1,9 @@
 #ifndef DB_RECORDS_H
 #define DB_RECORDS_H
 
+#include <time.h>
+
 #define NAME_LENGTH 256
-#define TIME_LENGTH 20
 
 typedef enum {
     Running, Ready, Paused, Blocked, Dying, Sleeping, Undefined
@@ -12,8 +13,8 @@ typedef struct {
     int pid;
     char name[NAME_LENGTH];
     int priority;
-    char kern_tm[TIME_LENGTH];
-    char file_tm[TIME_LENGTH];
+    struct tm kern_tm;
+    struct tm file_tm;
     float cpu_usage;
     Status status;
 } Record;

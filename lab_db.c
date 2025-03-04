@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "parsing/db_command_parser.h"
+#include "application/commands.h"
+#include "application/parsing/parser.h"
 
 void print_command(const ParsedCommand *cmd) {
     printf("Command type: %d\n", cmd->type);
@@ -25,10 +26,11 @@ int main() {
         "update   kern_tm='18:40:52',,,priority=15, priority<=004 status/not_in/['paused'] pid<=15",
         "sort pid=desc,file_tm=desc,cpu_usage=asc",
         "insert kern_tm='23:5:59',cpu_usage=7.0,status='paused',file_tm='18:42:00',name=\"Cisco \"Control\",v.1.01\",priority=-00000000000051,pid=57",
-        "select kern_tm,name kern_tm!='18:42:00' file_tm<'18:40:52' name>\"alert\" name!=\"alert\"",
+        "select    kern_tm,,,name kern_tm!='18:42:00' file_tm<'18:40:52' name>\"ale    rt\" name!=\"al ert\"",
         "delete priority>41 kern_tm>'18:42:00'"
     };
 
+    /*
     for (int i = 0; i < 5; i++) {
         ParsedCommand cmd;
         memset(&cmd, 0, sizeof(ParsedCommand));
@@ -39,5 +41,9 @@ int main() {
             printf("Error parsing: %s\n", commands[i]);
         }
     }
+    */
 
+    ParsedCommand cmd;
+    parse_command(commands[2], &cmd);
+    insert_command(NULL, cmd);
 }

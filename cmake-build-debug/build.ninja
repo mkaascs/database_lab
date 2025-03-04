@@ -55,23 +55,29 @@ build CMakeFiles/1.dir/lab_db.c.o: C_COMPILER__1_unscanned_Debug /Users/makaasz/
   OBJECT_DIR = CMakeFiles/1.dir
   OBJECT_FILE_DIR = CMakeFiles/1.dir
 
-build CMakeFiles/1.dir/application/db_commands.c.o: C_COMPILER__1_unscanned_Debug /Users/makaasz/Проекты/С/Лабы/Структуры$ данных/1/application/db_commands.c || cmake_object_order_depends_target_1
-  DEP_FILE = CMakeFiles/1.dir/application/db_commands.c.o.d
-  FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
-  OBJECT_DIR = CMakeFiles/1.dir
-  OBJECT_FILE_DIR = CMakeFiles/1.dir/application
-
 build CMakeFiles/1.dir/memory/stats.c.o: C_COMPILER__1_unscanned_Debug /Users/makaasz/Проекты/С/Лабы/Структуры$ данных/1/memory/stats.c || cmake_object_order_depends_target_1
   DEP_FILE = CMakeFiles/1.dir/memory/stats.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/1.dir
   OBJECT_FILE_DIR = CMakeFiles/1.dir/memory
 
-build CMakeFiles/1.dir/parsing/db_command_parser.c.o: C_COMPILER__1_unscanned_Debug /Users/makaasz/Проекты/С/Лабы/Структуры$ данных/1/parsing/db_command_parser.c || cmake_object_order_depends_target_1
-  DEP_FILE = CMakeFiles/1.dir/parsing/db_command_parser.c.o.d
+build CMakeFiles/1.dir/application/parsing/parser.c.o: C_COMPILER__1_unscanned_Debug /Users/makaasz/Проекты/С/Лабы/Структуры$ данных/1/application/parsing/parser.c || cmake_object_order_depends_target_1
+  DEP_FILE = CMakeFiles/1.dir/application/parsing/parser.c.o.d
   FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/1.dir
-  OBJECT_FILE_DIR = CMakeFiles/1.dir/parsing
+  OBJECT_FILE_DIR = CMakeFiles/1.dir/application/parsing
+
+build CMakeFiles/1.dir/application/commands.c.o: C_COMPILER__1_unscanned_Debug /Users/makaasz/Проекты/С/Лабы/Структуры$ данных/1/application/commands.c || cmake_object_order_depends_target_1
+  DEP_FILE = CMakeFiles/1.dir/application/commands.c.o.d
+  FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/1.dir
+  OBJECT_FILE_DIR = CMakeFiles/1.dir/application
+
+build CMakeFiles/1.dir/application/domain/converting/converter.c.o: C_COMPILER__1_unscanned_Debug /Users/makaasz/Проекты/С/Лабы/Структуры$ данных/1/application/domain/converting/converter.c || cmake_object_order_depends_target_1
+  DEP_FILE = CMakeFiles/1.dir/application/domain/converting/converter.c.o.d
+  FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/1.dir
+  OBJECT_FILE_DIR = CMakeFiles/1.dir/application/domain/converting
 
 
 # =============================================================================
@@ -81,7 +87,7 @@ build CMakeFiles/1.dir/parsing/db_command_parser.c.o: C_COMPILER__1_unscanned_De
 #############################################
 # Link the executable 1
 
-build 1: C_EXECUTABLE_LINKER__1_Debug CMakeFiles/1.dir/lab_db.c.o CMakeFiles/1.dir/application/db_commands.c.o CMakeFiles/1.dir/memory/stats.c.o CMakeFiles/1.dir/parsing/db_command_parser.c.o
+build 1: C_EXECUTABLE_LINKER__1_Debug CMakeFiles/1.dir/lab_db.c.o CMakeFiles/1.dir/memory/stats.c.o CMakeFiles/1.dir/application/parsing/parser.c.o CMakeFiles/1.dir/application/commands.c.o CMakeFiles/1.dir/application/domain/converting/converter.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   OBJECT_DIR = CMakeFiles/1.dir
   POST_BUILD = :

@@ -50,9 +50,10 @@
 			"sourceIndexes" : 
 			[
 				0,
-				3,
-				5,
-				7
+				4,
+				6,
+				7,
+				9
 			]
 		}
 	],
@@ -86,9 +87,10 @@
 			"sourceIndexes" : 
 			[
 				0,
-				3,
-				5,
-				7
+				4,
+				6,
+				7,
+				9
 			]
 		},
 		{
@@ -97,8 +99,9 @@
 			[
 				1,
 				2,
-				4,
-				6
+				3,
+				5,
+				8
 			]
 		}
 	],
@@ -117,14 +120,8 @@
 		},
 		{
 			"backtrace" : 1,
-			"path" : "application/db_commands.h",
+			"path" : "application/commands.h",
 			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "application/db_commands.c",
-			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
@@ -139,13 +136,30 @@
 		},
 		{
 			"backtrace" : 1,
-			"path" : "parsing/db_command_parser.h",
+			"path" : "application/parsing/parser.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "parsing/db_command_parser.c",
+			"path" : "application/parsing/parser.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "application/commands.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "application/domain/converting/converter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "application/domain/converting/converter.c",
 			"sourceGroupIndex" : 0
 		}
 	],
