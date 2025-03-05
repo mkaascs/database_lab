@@ -43,7 +43,15 @@ int main() {
     }
     */
 
+    Database database;
+    init_database(&database);
+
     ParsedCommand cmd;
     parse_command(commands[2], &cmd);
-    insert_command(NULL, cmd);
+    insert_command(&database, cmd);
+
+    printf("%lu\n", database.length);
+    printf("cpu: %f\npid: %d\npriority: %d\nname: %s\nstatus: %d\nkern: %d:%d:%d\nfile: %d:%d:%d", database.head->data.cpu_usage, database.head->data.pid, database.head->data.priority, database.head->data.name, database.head->data.status,
+        database.head->data.kern_tm.tm_hour, database.head->data.kern_tm.tm_min, database.head->data.kern_tm.tm_sec,
+        database.head->data.file_tm.tm_hour, database.head->data.file_tm.tm_min, database.head->data.file_tm.tm_sec);
 }

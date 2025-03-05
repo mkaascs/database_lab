@@ -17,11 +17,19 @@ typedef struct {
     struct tm file_tm;
     float cpu_usage;
     Status status;
-} Record;
+} ProcessInfo;
 
-typedef struct {
-    Record* data;
+typedef struct Node {
+    ProcessInfo data;
     struct Node* next;
 } Node;
+
+typedef struct {
+    Node* head;
+    Node* tail;
+    size_t length;
+} Database;
+
+void init_database(Database*);
 
 #endif //DB_RECORDS_H

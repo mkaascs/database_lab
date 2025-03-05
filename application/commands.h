@@ -1,10 +1,10 @@
 #ifndef DB_COMMANDS_H
 #define DB_COMMANDS_H
 
-#include "domain/db_records.h"
+#include "domain/models.h"
 #include "parsing/parser.h"
 
-int insert_command(Node*, ParsedCommand);
+int insert_command(Database*, ParsedCommand);
 void select_command(Node*, ParsedCommand);
 void delete_records(Node*, ParsedCommand);
 void update_records(Node*, ParsedCommand);

@@ -2,7 +2,7 @@
 #define CONVERTER_H
 
 #include <time.h>
-#include "../db_records.h"
+#include "../models.h"
 
 typedef int bool;
 #define true 1

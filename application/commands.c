@@ -3,8 +3,7 @@
 
 #include "commands.h"
 
-#include <stdio.h>
-
+#include "../memory/stats.h"
 #include "domain/converting/converter.h"
 
 typedef int bool;
@@ -14,17 +13,16 @@ typedef int bool;
 #define MAX_FIELDS_COUNT 7
 
 void trim_quotation(char* origin, char* result) {
-    int left_border = 0;
-    int right_border = strlen(origin) - 1;
+    const int length = strlen(origin);
 
-    for (; origin[left_border] == '\'' || origin[left_border] == '\"'; left_border++) {}
-    for (; origin[right_border] == '\'' || origin[right_border] == '\"'; right_border--) {}
+    int left_border = origin[0] == '\'' || origin[0] == '\"';
+    int right_border = length - 1 - (origin[length - 1] == '\'' || origin[length - 1] == '\"');
 
     strncpy(result, origin + left_border, right_border - left_border + 1);
     result[right_border - left_border + 1] = '\0';
 }
 
-bool set_value(char* field, char* value, Record* record) {
+bool set_value(char* field, char* value, ProcessInfo* record) {
     if (strcmp(field, "pid") == 0)
         return string_to_int(value, &record->pid);
 
@@ -37,13 +35,13 @@ bool set_value(char* field, char* value, Record* record) {
         return string_to_int(value, &record->priority);
 
     if (strcmp(field, "kern_tm") == 0) {
-        char time[20];
+        char time[10];
         trim_quotation(value, time);
         return string_to_time(time, &record->kern_tm);
     }
 
     if (strcmp(field, "file_tm") == 0) {
-        char time[20];
+        char time[10];
         trim_quotation(value, time);
         return string_to_time(time, &record->file_tm);
     }
@@ -57,21 +55,46 @@ bool set_value(char* field, char* value, Record* record) {
     return false;
 }
 
-int insert_command(Node* database, ParsedCommand command) {
+bool set_values(ParsedCommand command, ProcessInfo* record) {
+    for (int index = 0; index < command.fields_count; index++) {
+        for (int prev = 0; prev < index; prev++) {
+            if (strcmp(command.fields[index].field, command.fields[prev].field) == 0) {
+                return false;
+            }
+        }
+
+        set_value(command.fields[index].field, command.fields[index].value, record);
+    }
+
+    return true;
+}
+
+int insert_command(Database* database, ParsedCommand command) {
     if (command.type != Insert)
         return -1;
 
     if (command.fields_count != MAX_FIELDS_COUNT)
         return -1;
 
-    Record record;
-    for (int index = 0; index < command.fields_count; index++) {
-        set_value(command.fields[index].field, command.fields[index].value, &record);
+    ProcessInfo record;
+    if (!set_values(command, &record))
+        return -1;
+
+    Node* node = (Node*)track_malloc(sizeof(Node));
+
+    node->data = record;
+    node->next = NULL;
+
+    if (database->length == 0) {
+        database->head = node;
+        database->tail = node;
     }
 
-    printf("cpu: %f\npid: %d\npriority: %d\nname: %s\nstatus: %d\nkern: %d:%d:%d\nfile: %d:%d:%d", record.cpu_usage, record.pid, record.priority, record.name, record.status,
-        record.kern_tm.tm_hour, record.kern_tm.tm_min, record.kern_tm.tm_sec,
-        record.file_tm.tm_hour, record.file_tm.tm_min, record.file_tm.tm_sec);
+    else {
+        database->tail->next = node;
+        database->tail = node;
+    }
 
+    database->length++;
     return 0;
 }
