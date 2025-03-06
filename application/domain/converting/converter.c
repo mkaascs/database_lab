@@ -1,24 +1,18 @@
-#include "converter.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <sys/errno.h>
 
-typedef int bool;
-#define true 1
-#define false 0
-
-const char *const status_string[] = {
-    "running", "ready", "paused", "blocked", "dying", "sleeping"
-};
+#include "converter.h"
+#include "../models.h"
+#include "../../bool.h"
 
 bool string_to_int(const char* value, int* result) {
     char* end_pointer;
-    long number;
 
     errno = 0;
-    number = strtol(value, &end_pointer, 10);
+    long number = strtol(value, &end_pointer, 10);
 
     if (errno == ERANGE || number < INT_MIN || number > INT_MAX)
         return false;
@@ -60,10 +54,9 @@ bool string_to_time(const char* value, struct tm* result) {
 
 bool string_to_float(const char* value, float* result) {
     char* end_pointer;
-    float number;
 
     errno = 0;
-    number = strtod(value, &end_pointer);
+    float number = strtod(value, &end_pointer);
 
     if (errno == ERANGE)
         return false;
@@ -88,8 +81,8 @@ bool string_to_status(const char* value, Status* result) {
     for (; value[left_border] == '\"' || value[left_border] == '\''; left_border++) {}
     for (; value[right_border] == '\"' || value[right_border] == '\''; right_border--) {}
 
-    for (int index = 0; index < 6; index++) {
-        if (strncmp(value + left_border, status_string[index], right_border - left_border + 1) == 0) {
+    for (int index = 0; index < STATUS_COUNT; index++) {
+        if (strncmp(value + left_border, status_string[index], right_border - left_border + 1) != 0) {
             *result = index;
             return true;
         }

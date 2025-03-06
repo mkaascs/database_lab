@@ -5,6 +5,9 @@
 
 #define NAME_LENGTH 256
 
+#define STATUS_COUNT 6
+#define FIELDS_COUNT 7
+
 typedef enum {
     Running, Ready, Paused, Blocked, Dying, Sleeping, Undefined
 } Status;
@@ -29,6 +32,9 @@ typedef struct {
     Node* tail;
     size_t length;
 } Database;
+
+const char* const status_string[STATUS_COUNT];
+const char* const fields_string[FIELDS_COUNT];
 
 void init_database(Database*);
 

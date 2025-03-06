@@ -2,11 +2,9 @@
 #define CONVERTER_H
 
 #include <time.h>
-#include "../models.h"
 
-typedef int bool;
-#define true 1
-#define false 0
+#include "../models.h"
+#include "../../bool.h"
 
 bool string_to_int(const char*, int*);
 bool string_to_time(const char*, struct tm*);

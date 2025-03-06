@@ -1,19 +1,11 @@
 #include "../parsing/parser.h"
+#include "../bool.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-typedef int bool;
-#define true 1
-#define false 0
-
 #define MAX_TOKENS 12
-#define MAX_FIELDS 10
-
-#define FIELD_LENGTH 10
-#define OPERATOR_LENGTH 10
-#define VALUE_LENGTH 30
 
 const char *const command_type_names[] = {
     "insert", "select", "update", "delete", "uniq", "sort"

@@ -15,4 +15,10 @@ add_executable(1 lab_db.c
         application/domain/converting/converter.h
         application/domain/converting/converter.c
         application/domain/models.c
+        application/operations/fields.h
+        application/bool.h
+        application/operations/fields.c
+        application/operations/conditions/conditions.h
+        application/operations/conditions/conditions.c
+        application/operations/conditions/enum/enum.h
 )
