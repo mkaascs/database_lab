@@ -29,8 +29,8 @@ int main() {
     const char *commands[] = {
         "update   kern_tm='18:40:52',,,priority=15, priority<=004 status/not_in/['paused'] pid<=15",
         "sort pid=desc,file_tm=desc,cpu_usage=asc",
-        "insert kern_tm='23:5:59',cpu_usage=7.0,status='paused',file_tm='18:42:00',name=\"Cisco \"Control\",v.1.01\",priority=-00000000000051,pid=57",
-        "select    kern_tm,,,name kern_tm!='18:42:00' file_tm<'18:40:52' name>\"ale    rt\" name!=\"al ert\"",
+        "insert kern_tm='23:05:59',cpu_usage=7.01,status='paused',file_tm='18:42:00',name=\"Cisco \"Control\",v.1.01\",priority=-00000000000051,pid=57",
+        "select pid,kern_tm,file_tm,cpu_usage,name,status,priority",
         "delete priority>41 kern_tm>'18:42:00'"
     };
 
@@ -40,4 +40,8 @@ int main() {
     ParsedCommand cmd;
     parse_command(commands[2], &cmd);
     insert_command(&database, cmd, print);
+
+    ParsedCommand cmd2;
+    parse_command(commands[3], &cmd2);
+    select_command(&database, cmd2, print);
 }
