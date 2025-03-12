@@ -1,5 +1,4 @@
 #include "../parsing/parser.h"
-#include "../bool.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,7 +13,7 @@ const char *const command_type_names[] = {
 int tokenize(const char* origin, char symbol, char (*result)[FIELD_LENGTH + VALUE_LENGTH]) {
     int split_length = 0;
     int left_index = 0;
-    bool in_quotation = false;
+    int in_quotation = 0;
     const int length = strlen(origin);
 
     for (int index = 0; index <= length; index++) {
@@ -53,11 +52,11 @@ void parse_fields(const char* fields, ParsedCommand* command) {
         int length = strlen(tokens[index]);
         int equal_index = strcspn(tokens[index], "=");
         if (equal_index == length) {
-            command->fields[index].has_value = false;
+            command->fields[index].has_value = 0;
             equal_index = length;
         }
 
-        else command->fields[index].has_value = true;
+        else command->fields[index].has_value = 1;
 
         strncpy(command->fields[index].field, tokens[index], equal_index);
         command->fields[index].field[equal_index] = '\0';

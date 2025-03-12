@@ -9,7 +9,7 @@
 #define FIELDS_COUNT 7
 
 typedef enum {
-    Running, Ready, Paused, Blocked, Dying, Sleeping, Undefined
+    Running, Ready, Paused, Blocked, Dying, Sleeping
 } Status;
 
 typedef struct {

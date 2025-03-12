@@ -48,7 +48,7 @@ int select_command(Database* database, ParsedCommand command, void (*presenter)(
 
     Node* current = database->head;
     while (current != NULL) {
-        bool is_match = false;
+        int is_match = 0;
         for (int index = 0; index < command.conditions_count; index++) {
             const int code = match(command.conditions[index], current->data, &is_match);
             if (code == -1)
