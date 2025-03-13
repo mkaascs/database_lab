@@ -42,6 +42,12 @@ int execute_command(Database* database, const char* command, void (*presenter)(c
     if (parsed_command.type == Select)
         result = select_command(database, parsed_command, presenter);
 
+    if (parsed_command.type == Delete)
+        result = delete_command(database, parsed_command, presenter);
+
+    if (parsed_command.type == Update)
+        result = update_command(database, parsed_command, presenter);
+
     if (parsed_command.type == Uniq)
         result = uniq_command(database, parsed_command, presenter);
 

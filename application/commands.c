@@ -49,17 +49,17 @@ int select_command(const Database* database, ParsedCommand command, void (*prese
 
     Node* current = database->head;
     while (current != NULL) {
-        int conditions_met = 1;
+        int match_result = 1;
         for (int index = 0; index < command.conditions_count; index++) {
-            const int code = match(command.conditions[index], current->data, &conditions_met);
+            const int code = match(command.conditions[index], current->data, &match_result);
             if (code == -1)
                 return -1;
 
-            if (!conditions_met)
+            if (!match_result)
                 break;
         }
 
-        if (!conditions_met) {
+        if (!match_result) {
             current = current->next;
             continue;
         }
@@ -111,6 +111,88 @@ int select_command(const Database* database, ParsedCommand command, void (*prese
         current = current->next;
     }
 
+    return 0;
+}
+
+int delete_command(Database* database, ParsedCommand command, void (*presenter)(char*)) {
+    if (command.type != Delete || command.fields_count != 0)
+        return -1;
+
+    int removed = 0;
+    Node* current = database->head;
+    while (current != NULL) {
+        int match_result = 1;
+        for (int index = 0; index < command.conditions_count; index++) {
+            const int code = match(command.conditions[index], current->data, &match_result);
+            if (code == -1)
+                return -1;
+
+            if (!match_result)
+                break;
+        }
+
+        if (!match_result) {
+            current = current->next;
+            continue;
+        }
+
+        Node* to_delete = current;
+        if (to_delete->previous != NULL)
+            to_delete->previous->next = to_delete->next;
+
+        else database->head = to_delete->next;
+
+        if (to_delete->next != NULL)
+            to_delete->next->previous = to_delete->previous;
+
+        else database->tail = to_delete->previous;
+
+        track_free(to_delete);
+        removed++;
+        database->length--;
+        current = current->next;
+    }
+
+    char buffer[32];
+    sprintf(buffer, "delete:%d", removed);
+    presenter(buffer);
+    return 0;
+}
+
+int update_command(Database* database, ParsedCommand command, void (*presenter)(char*)) {
+    if (command.type != Update || command.fields_count == 0)
+        return -1;
+
+    int updated = 0;
+    Node* current = database->head;
+    while (current != NULL) {
+        int match_result = 1;
+        for (int index = 0; index < command.conditions_count; index++) {
+            const int code = match(command.conditions[index], current->data, &match_result);
+            if (code == -1)
+                return -1;
+
+            if (!match_result)
+                break;
+        }
+
+        if (!match_result) {
+            current = current->next;
+            continue;
+        }
+
+        for (int index = 0; index < command.fields_count; index++) {
+            if (!set_value(command.fields[index].field, command.fields[index].value, &(current->data)))
+                return -1;
+        }
+
+        updated++;
+        current = current->next;
+    }
+
+    char buffer[32];
+    sprintf(buffer, "update:%d", updated);
+    presenter(buffer);
     return 0;
 }
 

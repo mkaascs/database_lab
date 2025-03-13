@@ -6,9 +6,9 @@
 
 int insert_command(Database*, ParsedCommand, void (*)(char*));
 int select_command(const Database*, ParsedCommand, void (*)(char*));
-int delete_records(Database*, ParsedCommand, void (*)(char*));
-int update_records(Database*, ParsedCommand, void (*)(char*));
+int delete_command(Database*, ParsedCommand, void (*)(char*));
+int update_command(Database*, ParsedCommand, void (*)(char*));
 int uniq_command(Database*, ParsedCommand, void (*)(char*));
-int sort_records(Database*, ParsedCommand, void (*)(char*));
+int sort_command(Database*, ParsedCommand, void (*)(char*));
 
 #endif //DB_COMMANDS_H
