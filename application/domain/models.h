@@ -25,6 +25,7 @@ typedef struct {
 typedef struct Node {
     ProcessInfo data;
     struct Node* next;
+    struct Node* previous;
 } Node;
 
 typedef struct {
@@ -37,5 +38,6 @@ const char* const status_string[STATUS_COUNT];
 const char* const fields_string[FIELDS_COUNT];
 
 void init_database(Database*);
+int execute_command(Database*, const char*, void (*)(char*));
 
 #endif //DB_RECORDS_H

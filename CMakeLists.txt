@@ -19,6 +19,4 @@ add_executable(1 lab_db.c
         application/operations/fields.c
         application/operations/conditions/conditions.h
         application/operations/conditions/conditions.c
-        application/domain/hashing/hash.h
-        application/domain/hashing/hash.c
 )

@@ -56,8 +56,7 @@
 				9,
 				10,
 				12,
-				14,
-				16
+				14
 			]
 		}
 	],
@@ -97,8 +96,7 @@
 				9,
 				10,
 				12,
-				14,
-				16
+				14
 			]
 		},
 		{
@@ -111,8 +109,7 @@
 				5,
 				8,
 				11,
-				13,
-				15
+				13
 			]
 		}
 	],
@@ -199,17 +196,6 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "application/operations/conditions/conditions.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "application/domain/hashing/hash.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "application/domain/hashing/hash.c",
 			"sourceGroupIndex" : 0
 		}
 	],

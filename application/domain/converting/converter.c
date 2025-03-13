@@ -79,7 +79,7 @@ int string_to_status(const char* value, Status* result) {
     for (; value[right_border] == '\"' || value[right_border] == '\''; right_border--) {}
 
     for (int index = 0; index < STATUS_COUNT; index++) {
-        if (strncmp(value + left_border, status_string[index], right_border - left_border + 1) != 0) {
+        if (strncmp(value + left_border, status_string[index], right_border - left_border + 1) == 0) {
             *result = index;
             return 1;
         }
