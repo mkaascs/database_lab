@@ -8,7 +8,7 @@ int insert_command(Database*, ParsedCommand, void (*)(char*));
 int select_command(const Database*, ParsedCommand, void (*)(char*));
 void delete_records(Node*, ParsedCommand);
 void update_records(Node*, ParsedCommand);
-void uniq_records(Node*, ParsedCommand);
+int uniq_command(Database*, ParsedCommand, void (*)(char*));
 void sort_records(Node*, ParsedCommand);
 
 #endif //DB_COMMANDS_H
