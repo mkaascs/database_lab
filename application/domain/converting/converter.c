@@ -5,6 +5,16 @@
 
 #include "converter.h"
 
+void trim_quotation(const char* origin, char* result) {
+    const int length = strlen(origin);
+
+    int left_border = origin[0] == '\'' || origin[0] == '\"';
+    int right_border = length - 1 - (origin[length - 1] == '\'' || origin[length - 1] == '\"');
+
+    strncpy(result, origin + left_border, right_border - left_border + 1);
+    result[right_border - left_border + 1] = '\0';
+}
+
 int string_to_int(const char* value, int* result) {
     char* end_pointer;
 
@@ -28,8 +38,11 @@ int string_to_int(const char* value, int* result) {
 }
 
 int string_to_time(const char* value, struct tm* result) {
+    char trim_value[24];
+    trim_quotation(value, trim_value);
+
     struct tm time = {0};
-    char* end_pointer = strptime(value, "%H:%M:%S", &time);
+    char* end_pointer = strptime(trim_value, "%H:%M:%S", &time);
 
     if (end_pointer == NULL)
         return 0;

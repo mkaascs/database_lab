@@ -19,4 +19,6 @@ add_executable(1 lab_db.c
         application/operations/fields.c
         application/operations/conditions/conditions.h
         application/operations/conditions/conditions.c
+        application/operations/conditions/types/types.h
+        application/operations/conditions/types/types.c
 )

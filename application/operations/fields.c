@@ -3,16 +3,6 @@
 #include "fields.h"
 #include "../domain/converting/converter.h"
 
-void trim_quotation(const char* origin, char* result) {
-    const int length = strlen(origin);
-
-    int left_border = origin[0] == '\'' || origin[0] == '\"';
-    int right_border = length - 1 - (origin[length - 1] == '\'' || origin[length - 1] == '\"');
-
-    strncpy(result, origin + left_border, right_border - left_border + 1);
-    result[right_border - left_border + 1] = '\0';
-}
-
 #pragma region Setters
 int set_pid(const char* value, ProcessInfo* record) {
     return string_to_int(value, &record->pid);
@@ -28,15 +18,11 @@ int set_priority(const char* value, ProcessInfo* record) {
 }
 
 int set_kern_tm(const char* value, ProcessInfo* record) {
-    char time[24];
-    trim_quotation(value, time);
-    return string_to_time(time, &record->kern_tm);
+    return string_to_time(value, &record->kern_tm);
 }
 
 int set_file_tm(const char* value, ProcessInfo* record) {
-    char time[24];
-    trim_quotation(value, time);
-    return string_to_time(time, &record->file_tm);
+    return string_to_time(value, &record->file_tm);
 }
 
 int set_cpu_usage(const char* value, ProcessInfo* record) {

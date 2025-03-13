@@ -97,6 +97,12 @@ build CMakeFiles/1.dir/application/operations/conditions/conditions.c.o: C_COMPI
   OBJECT_DIR = CMakeFiles/1.dir
   OBJECT_FILE_DIR = CMakeFiles/1.dir/application/operations/conditions
 
+build CMakeFiles/1.dir/application/operations/conditions/types/types.c.o: C_COMPILER__1_unscanned_Debug /Users/makaasz/Проекты/С/Лабы/Структуры$ данных/1/application/operations/conditions/types/types.c || cmake_object_order_depends_target_1
+  DEP_FILE = CMakeFiles/1.dir/application/operations/conditions/types/types.c.o.d
+  FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/1.dir
+  OBJECT_FILE_DIR = CMakeFiles/1.dir/application/operations/conditions/types
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target 1
@@ -105,7 +111,7 @@ build CMakeFiles/1.dir/application/operations/conditions/conditions.c.o: C_COMPI
 #############################################
 # Link the executable 1
 
-build 1: C_EXECUTABLE_LINKER__1_Debug CMakeFiles/1.dir/lab_db.c.o CMakeFiles/1.dir/memory/stats.c.o CMakeFiles/1.dir/application/parsing/parser.c.o CMakeFiles/1.dir/application/commands.c.o CMakeFiles/1.dir/application/domain/converting/converter.c.o CMakeFiles/1.dir/application/domain/models.c.o CMakeFiles/1.dir/application/operations/fields.c.o CMakeFiles/1.dir/application/operations/conditions/conditions.c.o
+build 1: C_EXECUTABLE_LINKER__1_Debug CMakeFiles/1.dir/lab_db.c.o CMakeFiles/1.dir/memory/stats.c.o CMakeFiles/1.dir/application/parsing/parser.c.o CMakeFiles/1.dir/application/commands.c.o CMakeFiles/1.dir/application/domain/converting/converter.c.o CMakeFiles/1.dir/application/domain/models.c.o CMakeFiles/1.dir/application/operations/fields.c.o CMakeFiles/1.dir/application/operations/conditions/conditions.c.o CMakeFiles/1.dir/application/operations/conditions/types/types.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk
   OBJECT_DIR = CMakeFiles/1.dir
   POST_BUILD = :

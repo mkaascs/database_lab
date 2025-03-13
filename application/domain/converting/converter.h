@@ -5,6 +5,7 @@
 
 #include "../models.h"
 
+void trim_quotation(const char*, char*);
 int string_to_int(const char*, int*);
 int string_to_time(const char*, struct tm*);
 int string_to_float(const char*, float*);

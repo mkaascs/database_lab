@@ -1,9 +1,12 @@
 #include "models.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "../commands.h"
 #include "../parsing/parser.h"
+
+#define MAX_INCORRECT_COMMAND_LENGTH 20
 
 const char* const status_string[STATUS_COUNT] = {
     "running", "ready", "paused", "blocked", "dying", "sleeping"
@@ -20,7 +23,7 @@ void init_database(Database* database) {
 }
 
 void print_incorrect_command(const char* command, void (*presenter)(char*)) {
-    char cropped_command[21];
+    char cropped_command[MAX_INCORRECT_COMMAND_LENGTH + 1];
     snprintf(cropped_command, sizeof cropped_command, "%s", command);
 
     char incorrect_command_line[35];
@@ -30,6 +33,7 @@ void print_incorrect_command(const char* command, void (*presenter)(char*)) {
 
 int execute_command(Database* database, const char* command, void (*presenter)(char*)) {
     ParsedCommand parsed_command;
+    memset(&parsed_command, 0, sizeof(ParsedCommand));
     int result = parse_command(command, &parsed_command);
 
     if (parsed_command.type == Insert)

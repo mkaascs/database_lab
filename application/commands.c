@@ -9,7 +9,6 @@
 #include <string.h>
 
 #define MAX_FIELDS_COUNT 7
-#define FLOAT_EPSILON 1e-6
 
 int insert_command(Database* database, ParsedCommand command, void (*presenter)(char*)) {
     if (command.type != Insert || command.fields_count != MAX_FIELDS_COUNT)
@@ -50,18 +49,20 @@ int select_command(const Database* database, ParsedCommand command, void (*prese
 
     Node* current = database->head;
     while (current != NULL) {
-        int is_match = 1;
+        int conditions_met = 1;
         for (int index = 0; index < command.conditions_count; index++) {
-            const int code = match(command.conditions[index], current->data, &is_match);
+            const int code = match(command.conditions[index], current->data, &conditions_met);
             if (code == -1)
                 return -1;
 
-            if (!is_match)
+            if (!conditions_met)
                 break;
         }
 
-        if (!is_match)
+        if (!conditions_met) {
+            current = current->next;
             continue;
+        }
 
         char* line = (char*)track_malloc(command.fields_count * (FIELD_LENGTH + VALUE_LENGTH));
         for (int index = 0; index < command.fields_count; index++) {

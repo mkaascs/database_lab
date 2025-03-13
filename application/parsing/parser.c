@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../../memory/stats.h"
+
 #define MAX_TOKENS 12
 
 const char *const command_type_names[] = {
@@ -86,6 +88,23 @@ void parse_condition(const char* condition, Condition* parsed) {
     strncpy(parsed->operator, condition + left_operator_border, right_operator_border - left_operator_border + 1);
     parsed->operator[right_operator_border - left_operator_border + 1] = '\0';
     strncpy(parsed->value, condition + right_operator_border + 1, VALUE_LENGTH);
+}
+
+void clear_parsed_command(ParsedCommand *command) {
+    for (int index = 0; index < command->fields_count; index++) {
+        track_free(command->fields[index].field);
+    }
+
+    command->fields_count = 0;
+
+    for (int index = 0; index < command->conditions_count; index++) {
+        track_free(command->conditions[index].field);
+        track_free(command->conditions[index].value);
+    }
+
+    command->conditions_count = 0;
+
+    memset(command, 0, sizeof(ParsedCommand));
 }
 
 int parse_command(const char* command_line, ParsedCommand* command) {
