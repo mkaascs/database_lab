@@ -12,5 +12,6 @@ int match_int(int, int, OperationType, int*);
 int match_float(float, float, OperationType, int*);
 int match_string(const char*, const char*, OperationType, int*);
 int match_time(struct tm, struct tm, OperationType, int*);
+int match_enum(Status, Status, OperationType);
 
 #endif

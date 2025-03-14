@@ -137,6 +137,8 @@ int delete_command(Database* database, ParsedCommand command, void (*presenter)(
         }
 
         Node* to_delete = current;
+        current = current->next;
+
         if (to_delete->previous != NULL)
             to_delete->previous->next = to_delete->next;
 
@@ -150,7 +152,6 @@ int delete_command(Database* database, ParsedCommand command, void (*presenter)(
         track_free(to_delete);
         removed++;
         database->length--;
-        current = current->next;
     }
 
     char buffer[32];
