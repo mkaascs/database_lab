@@ -96,7 +96,8 @@ int set_values(ParsedCommand command, ProcessInfo* record) {
         }
 
         const int success = set_value(command.fields[index].field, command.fields[index].value, record);
-        if (!success) return 0;
+        if (!success)
+            return 0;
     }
 
     return 1;

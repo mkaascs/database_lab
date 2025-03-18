@@ -3,7 +3,7 @@
 
 #include <time.h>
 
-#define NAME_LENGTH 256
+#define NAME_LENGTH 50
 
 #define STATUS_COUNT 6
 #define FIELDS_COUNT 7

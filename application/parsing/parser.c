@@ -6,67 +6,106 @@
 
 #include "../../memory/stats.h"
 
-#define MAX_TOKENS 12
-
 const char *const command_type_names[] = {
     "insert", "select", "update", "delete", "uniq", "sort"
 };
 
-int tokenize(const char* origin, char symbol, char (*result)[FIELD_LENGTH + VALUE_LENGTH]) {
-    int split_length = 0;
-    int left_index = 0;
+char* tokenize(char* origin, const char symbol, char** save_pointer) {
+    if (origin) *save_pointer = origin;
+    else if (!*save_pointer || **save_pointer == '\0') return NULL;
+
+    char* start = *save_pointer;
+    while (*start && *start == symbol) start++;
+
+    if (*start == '\0') return NULL;
+
     int in_quotation = 0;
-    const int length = strlen(origin);
+    char quote_symbol = 0;
 
-    for (int index = 0; index <= length; index++) {
-        if (origin[index] == '\"' || origin[index] == '\'')
-            in_quotation = !in_quotation;
+    char* token = start;
+    while (**save_pointer) {
+        int backslash_count = 0;
+        char* check_pointer = *save_pointer - 1;
 
-        if ((origin[index] == symbol && !in_quotation) || index == length) {
-            strncpy(result[split_length], origin + left_index, index - left_index);
-            result[split_length][index - left_index] = '\0';
-
-            for (; origin[index] == symbol && index < length; index++) {}
-
-            left_index = index;
-            split_length++;
+        while (check_pointer >= token && *check_pointer == '\\') {
+            backslash_count++;
+            check_pointer--;
         }
+
+        int is_escaped = backslash_count % 2 == 1;
+        if ((**save_pointer == '"' || **save_pointer == '\'') && !is_escaped) {
+            if (!in_quotation) {
+                in_quotation = 1;
+                quote_symbol = **save_pointer;
+            }
+
+            else if (quote_symbol == **save_pointer)
+                in_quotation = 0;
+        }
+
+        else if (!in_quotation && **save_pointer == symbol) {
+            **save_pointer = '\0';
+            (*save_pointer)++;
+
+            while (**save_pointer && **save_pointer == symbol) (*save_pointer)++;
+
+            return token;
+        }
+
+        (*save_pointer)++;
     }
 
-    return split_length;
+    *save_pointer = NULL;
+    return token;
 }
 
-void parse_command_type(const char* command_type, ParsedCommand* command) {
+int parse_command_type(const char* command_type, ParsedCommand* command) {
     for (int index = 0; index < 6; index++) {
         if (strcmp(command_type, command_type_names[index]) == 0) {
             command->type = index;
-            break;
+            return 0;
         }
     }
+
+    return -1;
 }
 
 void parse_fields(const char* fields, ParsedCommand* command) {
-    char tokens[MAX_FIELDS][FIELD_LENGTH + VALUE_LENGTH];
+    const size_t fields_length = strlen(fields);
+    char* fields_copy = (char*)track_malloc(fields_length + 1);
+    strncpy(fields_copy, fields, fields_length + 1);
 
-    command->fields_count = tokenize(fields, ',', tokens);
+    char* save_pointer;
+    char* token = tokenize(fields_copy, ',', &save_pointer);
 
-    for (int index = 0; index < command->fields_count; index++) {
-        int length = strlen(tokens[index]);
-        int equal_index = strcspn(tokens[index], "=");
-        if (equal_index == length) {
-            command->fields[index].has_value = 0;
-            equal_index = length;
+    while (token != NULL) {
+        char* equal = strchr(token, '=');
+        if (equal == NULL) {
+            equal = token + strlen(token) - 1;
+            *(equal + 1) = '\0';
         }
 
-        else command->fields[index].has_value = 1;
+        else *equal = '\0';
 
-        strncpy(command->fields[index].field, tokens[index], equal_index);
-        command->fields[index].field[equal_index] = '\0';
-        strncpy(command->fields[index].value, tokens[index] + equal_index + 1, VALUE_LENGTH);
+        char* field_name = token;
+        char* value = equal + 1;
+        strncpy(command->fields[command->fields_count].field, field_name, FIELD_LENGTH);
+
+        if (strlen(value) > 0) {
+            strncpy(command->fields[command->fields_count].value, value, VALUE_LENGTH);
+            command->fields[command->fields_count].has_value = 1;
+        }
+
+        else command->fields[command->fields_count].has_value = 0;
+
+        command->fields_count++;
+        token = tokenize(NULL, ',', &save_pointer);
     }
+
+    track_free(fields_copy);
 }
 
-void parse_condition(const char* condition, Condition* parsed) {
+int parse_condition(const char* condition, Condition* parsed) {
     int left_operator_border = -1;
     int right_operator_border = -1;
 
@@ -81,46 +120,47 @@ void parse_condition(const char* condition, Condition* parsed) {
     }
 
     if (left_operator_border == -1)
-        return;
+        return -1;
 
     strncpy(parsed->field, condition, left_operator_border);
     parsed->field[left_operator_border] = '\0';
     strncpy(parsed->operator, condition + left_operator_border, right_operator_border - left_operator_border + 1);
     parsed->operator[right_operator_border - left_operator_border + 1] = '\0';
     strncpy(parsed->value, condition + right_operator_border + 1, VALUE_LENGTH);
-}
-
-void clear_parsed_command(ParsedCommand *command) {
-    for (int index = 0; index < command->fields_count; index++) {
-        track_free(command->fields[index].field);
-    }
-
-    command->fields_count = 0;
-
-    for (int index = 0; index < command->conditions_count; index++) {
-        track_free(command->conditions[index].field);
-        track_free(command->conditions[index].value);
-    }
-
-    command->conditions_count = 0;
-
-    memset(command, 0, sizeof(ParsedCommand));
+    return 0;
 }
 
 int parse_command(const char* command_line, ParsedCommand* command) {
-    char tokens[MAX_TOKENS][FIELD_LENGTH + VALUE_LENGTH];
-    int length = tokenize(command_line, ' ', tokens);
+    const int command_length = strlen(command_line);
+    char* command_copy = (char*)track_malloc(command_length + 1);
+    strncpy(command_copy, command_line, command_length + 1);
 
-    parse_command_type(tokens[0], command);
-    int has_fields = command->type != Delete;
+    char* save_pointer;
+    char* token = tokenize(command_copy, ' ', &save_pointer);
 
-    if (has_fields)
-        parse_fields(tokens[1], command);
-
-    for (int index = 1 + has_fields; index < length; index++) {
-        parse_condition(tokens[index], &command->conditions[index - 1 - has_fields]);
-        command->conditions_count++;
+    if (parse_command_type(token, command) == -1) {
+        track_free(command_copy);
+        return -1;
     }
+
+    int has_fields = command->type != Delete;
+    token = tokenize(NULL, ' ', &save_pointer);
+
+    if (has_fields) {
+        parse_fields(token, command);
+        token = tokenize(NULL, ' ', &save_pointer);
+    }
+
+    while (token != NULL) {
+        if (parse_condition(token, &command->conditions[command->conditions_count++]) == -1) {
+            track_free(command_copy);
+            return -1;
+        }
+
+        token = tokenize(NULL, ' ', &save_pointer);
+    }
+
+    track_free(command_copy);
 
     return 0;
 }

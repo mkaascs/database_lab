@@ -35,6 +35,10 @@ int execute_command(Database* database, const char* command, void (*presenter)(c
     ParsedCommand parsed_command;
     memset(&parsed_command, 0, sizeof(ParsedCommand));
     int result = parse_command(command, &parsed_command);
+    if (result == -1) {
+        print_incorrect_command(command, presenter);
+        return -1;
+    }
 
     if (parsed_command.type == Insert)
         result = insert_command(database, parsed_command, presenter);

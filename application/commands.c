@@ -48,7 +48,11 @@ int select_command(const Database* database, ParsedCommand command, void (*prese
         return -1;
 
     Node* current = database->head;
-    while (current != NULL) {
+
+    int match_indexes[database->length];
+    int matches_count = 0;
+
+    for (int counter = 0; current != NULL; counter++) {
         int match_result = 1;
         for (int index = 0; index < command.conditions_count; index++) {
             const int code = match(command.conditions[index], current->data, &match_result);
@@ -59,12 +63,27 @@ int select_command(const Database* database, ParsedCommand command, void (*prese
                 break;
         }
 
-        if (!match_result) {
-            current = current->next;
-            continue;
-        }
+        if (match_result)
+            match_indexes[matches_count++] = counter;
 
-        char* line = (char*)track_malloc(command.fields_count * (FIELD_LENGTH + VALUE_LENGTH));
+        current = current->next;
+    }
+
+    char main_line_buffer[16];
+    sprintf(main_line_buffer, "select:%d", matches_count);
+    presenter(main_line_buffer);
+
+    current = database->head;
+    int counter = 0;
+    for (int match_index = 0; match_index < matches_count; match_index++) {
+        while (match_indexes[match_index] != counter++ && current != NULL)
+            current = current->next;
+
+        if (current == NULL || command.fields_count == 0)
+            break;
+
+        size_t line_length = 0;
+        char* line = (char*)track_malloc(sizeof(char));
         for (int index = 0; index < command.fields_count; index++) {
             FieldInfo field;
             if (get_value(command.fields[index].field, &current->data, &field) == 0)
@@ -103,6 +122,8 @@ int select_command(const Database* database, ParsedCommand command, void (*prese
                     command.fields[index].field, *value);
             }
 
+            line_length += strlen(buffer);
+            line = (char*)track_realloc(line, line_length);
             strcat(line, buffer);
         }
 
@@ -160,7 +181,7 @@ int delete_command(Database* database, ParsedCommand command, void (*presenter)(
     return 0;
 }
 
-int update_command(Database* database, ParsedCommand command, void (*presenter)(char*)) {
+int update_command(const Database* database, ParsedCommand command, void (*presenter)(char*)) {
     if (command.type != Update || command.fields_count == 0)
         return -1;
 

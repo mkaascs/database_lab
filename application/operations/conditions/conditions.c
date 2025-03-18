@@ -32,7 +32,9 @@ int match(Condition condition, ProcessInfo record, int* result) {
     }
 
     if (field_info.type == String) {
-        if (match_string((char*)field_info.value, condition.value, operator, result) == -1)
+        char trim_second[VALUE_LENGTH];
+        trim_quotation(condition.value, trim_second);
+        if (match_string((char*)field_info.value, trim_second, operator, result) == -1)
             return -1;
     }
 
@@ -42,6 +44,16 @@ int match(Condition condition, ProcessInfo record, int* result) {
             return -1;
 
         if (match_time(*(struct tm*)field_info.value, second, operator, result) == -1)
+            return -1;
+    }
+
+    if (field_info.type == Enum) {
+        Status* second;
+        int second_count = 0;
+        if (!string_to_statuses(condition.value, &second, &second_count))
+            return -1;
+
+        if (match_enum(*(Status*)field_info.value, second, second_count, operator, result) == -1)
             return -1;
     }
 

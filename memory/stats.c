@@ -23,3 +23,7 @@ void track_free(void* pointer) {
     data_stats.free_count++;
     free(pointer);
 }
+
+void get_memstat(DataStats* memstat) {
+    *memstat = data_stats;
+}

@@ -128,3 +128,24 @@ int match_time(struct tm first, struct tm second, OperationType operation, int* 
         operation,
         result);
 }
+
+int match_enum(Status first, Status* seconds, int seconds_count, OperationType operation, int* result) {
+    if (operation == In || operation == NotIn) {
+        for (int index = 0; index < seconds_count; index++) {
+            if (first == seconds[index]) {
+                *result = operation == In;
+                return 0;
+            }
+        }
+
+        *result = operation == NotIn;
+        return 0;
+    }
+
+    if (seconds_count != 1) {
+        *result = 0;
+        return -1;
+    }
+
+    return match_int(first, seconds[0], operation, result);
+}

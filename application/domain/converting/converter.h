@@ -10,5 +10,6 @@ int string_to_int(const char*, int*);
 int string_to_time(const char*, struct tm*);
 int string_to_float(const char*, float*);
 int string_to_status(const char*, Status*);
+int string_to_statuses(const char*, Status**, int*);
 
 #endif //CONVERTER_H

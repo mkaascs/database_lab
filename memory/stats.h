@@ -13,5 +13,6 @@ void* track_malloc(size_t);
 void* track_calloc(size_t, size_t);
 void* track_realloc(void*, size_t);
 void track_free(void*);
+void get_memstat(DataStats*);
 
 #endif //DB_STATS_H
