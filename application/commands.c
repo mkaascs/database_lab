@@ -8,6 +8,8 @@
 
 #include <string.h>
 
+#include "operations/sort/sort.h"
+
 #define MAX_FIELDS_COUNT 7
 
 int insert_command(Database* database, ParsedCommand command, void (*presenter)(char*)) {
@@ -280,6 +282,43 @@ int uniq_command(Database* database, ParsedCommand command, void (*presenter)(ch
 
     char buffer[32];
     sprintf(buffer, "uniq:%d", removed);
+    presenter(buffer);
+    return 0;
+}
+
+int sort_command(Database* database, ParsedCommand command, void (*presenter)(char*)) {
+    if (command.type != Sort || command.fields_count == 0)
+        return -1;
+
+    for (int first = 0; first < command.fields_count; first++) {
+        for (int second = first + 1; second < command.fields_count; second++) {
+            if (strcmp(command.fields[first].field, command.fields[second].field) == 0)
+                return -1;
+        }
+    }
+
+    SortField* fields = (SortField*)track_malloc(command.fields_count * sizeof(SortField));
+    for (int index = 0; index < command.fields_count; index++) {
+        const int left = *command.fields[index].value == '"' || *command.fields[index].value == '\'';
+
+        strncpy(fields[index].field, command.fields[index].field, FIELD_LENGTH);
+        if (strncmp("asc", command.fields[index].value + left, 3) == 0)
+            fields[index].ascending = 1;
+
+        else if (strncmp("desc", command.fields[index].value + left, 4) == 0)
+            fields[index].ascending = 0;
+
+        else {
+            track_free(fields);
+            return -1;
+        }
+    }
+
+    merge_sort(database, fields, command.fields_count);
+    track_free(fields);
+
+    char buffer[32];
+    sprintf(buffer, "sort:%d", database->length);
     presenter(buffer);
     return 0;
 }

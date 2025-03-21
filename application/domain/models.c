@@ -55,6 +55,9 @@ int execute_command(Database* database, const char* command, void (*presenter)(c
     if (parsed_command.type == Uniq)
         result = uniq_command(database, parsed_command, presenter);
 
+    if (parsed_command.type == Sort)
+        result = sort_command(database, parsed_command, presenter);
+
     if (result == -1) {
         print_incorrect_command(command, presenter);
         return -1;

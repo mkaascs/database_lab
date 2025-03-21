@@ -1,54 +1,18 @@
-insert name="alert",kern_tm='19:07:03',pid=004,priority=41,status='running',cpu_usage=5,file_tm='19:07:42'
-insert file_tm='23:59:59',pid=0,kern_tm='18:40:52',priority=57,cpu_usage=99.99,status='dying',name="proc3"
-insert status='sleeping',cpu_usage=14.0,name="alert",file_tm='19:07:55',priority=0,pid=18,kern_tm='19:07:43'
-insert cpu_usage=5,kern_tm='18:41:50',priority=40,pid=15,name="notepad",file_tm='23:59:59',status='blocked'
-insert kern_tm='19:05:41',pid=041,name="proc15",cpu_usage=7.0,status='dying',priority=0,file_tm='23:59:59'
-insert cpu_usage=5.51,priority=41,name="halt",kern_tm='18:42:00',file_tm='18:40:52',status='sleeping',pid=18
-insert kern_tm='23:59:59',cpu_usage=7.0,status='ready',file_tm='19:07:43',name="notepad",pid=57,priority=57
-insert priority=0,kern_tm='23:59:59',status='sleeping',cpu_usage=5,file_tm='18:42:00',name="notepad",pid=551
-insert file_tm='23:59:59',name="notepad",kern_tm='19:07:03',priority=0015,cpu_usage=14.0,pid=004,status='ready'
-insert cpu_usage=99.99,priority=0016,kern_tm='18:42:00',status='sleeping',pid=40,name="halt",file_tm='19:07:03'
-insert name="halt",cpu_usage=5,kern_tm='18:41:50',pid=40,priority=551,status='paused',file_tm='18:42:00'
-insert cpu_usage=99.99,priority=40,pid=0016,kern_tm='23:59:59',name="VIRUS",file_tm='19:07:55',status='sleeping'
-insert file_tm='19:07:55',status='paused',cpu_usage=6.91,name="proc15",kern_tm='23:59:59',priority=041,pid=-10
-insert file_tm='19:07:43',status='blocked',kern_tm='18:42:00',priority=15,pid=551,cpu_usage=5,name="proc1"
-insert kern_tm='18:40:51',cpu_usage=99.99,priority=40,pid=-10,file_tm='19:07:43',name="proc3",status='paused'
-insert name="halt",file_tm='18:40:51',status='paused',pid=15,cpu_usage=5,kern_tm='19:07:42',priority=-10
-insert name="proc15",priority=-19,kern_tm='19:07:43',file_tm='19:07:43',cpu_usage=5,status='blocked',pid=004
-insert status='sleeping',pid=18,file_tm='19:07:42',name="proc3",cpu_usage=999.99,priority=551,kern_tm='18:41:50'
-insert cpu_usage=1,file_tm='23:59:59',kern_tm='18:40:52',pid=0,status='paused',priority=-10,name="notepad"
-insert pid=551,cpu_usage=5.51,status='blocked',name="alert",priority=551,kern_tm='18:40:52',file_tm='19:07:43'
-insert kern_tm='19:07:42',cpu_usage=1,name="halt",priority=0016,pid=57,file_tm='19:07:43',status='blocked'
-insert priority=0,file_tm='19:07:43',kern_tm='19:07:42',status='running',pid=0016,cpu_usage=7.0,name="alert"
-insert name="alert",status='sleeping',file_tm='19:07:03',pid=0016,kern_tm='19:07:03',cpu_usage=99.99,priority=57
-insert status='sleeping',name="notepad",cpu_usage=5,file_tm='19:07:42',priority=-10,kern_tm='18:41:50',pid=18
-insert status='paused',kern_tm='18:40:51',priority=57,name="alert",pid=004,cpu_usage=999.99,file_tm='18:40:51'
-insert file_tm='18:40:52',name="VIRUS",pid=551,cpu_usage=6.91,status='running',kern_tm='18:40:51',priority=0
-insert file_tm='18:40:52',name="proc1",kern_tm='18:41:50',priority=004,pid=57,cpu_usage=999.99,status='dying'
-insert priority=57,status='running',cpu_usage=6.91,kern_tm='18:40:51',name="proc3",pid=57,file_tm='19:07:43'
-insert name="VIRUS",status='paused',priority=551,file_tm='19:07:43',pid=0,kern_tm='23:59:59',cpu_usage=7.0
-insert cpu_usage=999.99,file_tm='23:59:59',name="proc1",pid=18,priority=041,status='ready',kern_tm='19:07:42'
-update pid=57    pid>57    cpu_usage!=99.99    cpu_usage<=5.51    pid>40
-select    file_tm,kern_tm,priority,pid,name,cpu_usage,status
-update name="proc1"    file_tm=='18:42:00'    file_tm<='18:42:00'    file_tm<='19:07:55'
-select    kern_tm,priority,file_tm,name,pid,status,cpu_usage
-update status='sleeping'   priority<0016   kern_tm>='19:07:43'
-select   cpu_usage,pid,status,kern_tm,file_tm,priority,name
-update pid=-10 pid!=551
-select name,cpu_usage,priority,kern_tm,pid,file_tm,status
-update status='paused',cpu_usage=6.91 cpu_usage!=1 file_tm<'18:40:52' kern_tm<='19:05:41' cpu_usage<=999.99
-select cpu_usage,kern_tm,name,pid,status,file_tm,priority
-update priority=15,kern_tm='18:40:52' priority<=004 status/not_in/['paused'] pid<=15
-select name,pid,status,cpu_usage,priority,file_tm,kern_tm
-update cpu_usage=5,priority=0016  name>"halt"  kern_tm!='19:05:41'
-select  file_tm,priority,cpu_usage,name,status,kern_tm,pid
-update file_tm='19:07:55',pid=-10   file_tm<='19:07:42'
-select   priority,cpu_usage,kern_tm,name,status,pid,file_tm
-update name="alert",kern_tm='18:41:50',pid=0     pid<0     file_tm>='19:05:41'     priority!=041     status/in/['blocked']
-select     file_tm,cpu_usage,pid,kern_tm,priority,status,name
-update status='paused',name="alert",file_tm='18:40:52'     cpu_usage>=17.44     name!="proc3"     status=='paused'
-select     file_tm,cpu_usage,kern_tm,priority,name,pid,status
-update pid=-19,name="proc3",cpu_usage=14.0    name>"VIRUS"    file_tm!='19:07:42'
-select    pid,priority,cpu_usage,name,kern_tm,status,file_tm
-update pid=041,priority=004,kern_tm='18:41:50'  status/in/['paused','ready','sleeping']
-select  cpu_usage,pid,status,kern_tm,name,priority,file_tm
+insert  kern_tm='18:40:52',priority=-2147483648,status='paused',pid=18,cpu_usage=001.10,name="\\\\\\\\",file_tm='00:00:0'
+insert status='dying',priority=-10,cpu_usage=-.0,file_tm='18:41:50',pid=-10,kern_tm='18:41:50',name="C:\\Windows\\"
+insert    kern_tm='18:41:50',cpu_usage=999.99,pid=41,file_tm='00:00:0',name="Visual Studio 2015",status='ready',priority=00000000000657
+insert     cpu_usage=1,kern_tm='18:42:00',priority=57,pid=551,file_tm='19:07:03',name="  Cisco    'Control',      v.1.01  ",status='running'
+insert     file_tm='18:40:51',kern_tm='19:07:03',pid=40,priority=0016,status='ready',name="  Microsoft     Word     ",cpu_usage=-.01
+insert   file_tm='23:5:59',cpu_usage=.5,pid=041,priority=-00000000000051,kern_tm='18:40:51',name="alert",status='blocked'
+insert  status='ready',cpu_usage=17.44,pid=-10,kern_tm='18:40:51',priority=-10,name="MS \"Visual Studio\"",file_tm='18:40:52'
+insert     name="\\\\\\\\",cpu_usage=001.1,status='blocked',kern_tm='19:07:42',pid=18,priority=2147483647,file_tm='0:10:2'
+insert   cpu_usage=.5,priority=00000000000657,name="halt",status='sleeping',file_tm='0:10:2',pid=15,kern_tm='19:07:55'
+insert  name="proc1",status='paused',pid=004,kern_tm='18:40:52',file_tm='19:07:55',cpu_usage=1.05,priority=0
+sort file_tm=desc
+select pid,name,priority,kern_tm,file_tm,cpu_usage,status
+sort pid=desc,kern_tm=asc
+select pid,name,priority,kern_tm,file_tm,cpu_usage,status
+sort pid=desc,file_tm=desc,cpu_usage=asc
+select pid,name,priority,kern_tm,file_tm,cpu_usage,status
+sort priority=desc,name=asc,file_tm=desc,cpu_usage=asc
+select pid,name,priority,kern_tm,file_tm,cpu_usage,status

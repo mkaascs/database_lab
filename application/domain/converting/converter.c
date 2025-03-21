@@ -44,7 +44,8 @@ int string_to_time(const char* value, struct tm* result) {
     char trim_value[24];
     trim_quotation(value, trim_value);
 
-    struct tm time = {0};
+    struct tm time;
+    memset(&time, 0, sizeof(struct tm));
     char* end_pointer = strptime(trim_value, "%H:%M:%S", &time);
 
     if (end_pointer == NULL)
