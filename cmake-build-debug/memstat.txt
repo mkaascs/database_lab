@@ -1,4 +1,0 @@
-malloc:91
-realloc:280
-calloc:0
-free:91
